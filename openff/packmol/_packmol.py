@@ -4,6 +4,7 @@ A wrapper around PACKMOL. Adapted from OpenFF Evaluator v0.4.3.
 
 import os
 import random
+import re
 import shutil
 import subprocess
 import tempfile
@@ -466,7 +467,8 @@ def _get_packmol_version() -> Version:
                 text=True,
             )
 
-            found_version = Version(result.stdout.split("Version ")[1].split(" ")[0])
+            # the first whitespace-delimited token after "Version"
+            found_version = Version(re.search(r"Version\s+(\S+)", result.stdout).group(1))
 
         except Exception as error:
             raise PACKMOLRuntimeError(f"Unexpected error ({type(error)}) while running Packmol.") from error
