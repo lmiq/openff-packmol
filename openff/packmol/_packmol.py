@@ -468,7 +468,8 @@ def _get_packmol_version() -> Version:
             )
 
             # the first whitespace-delimited token after "Version"
-            found_version = Version(re.search(r"Version\s+(\S+)", result.stdout).group(1))
+            found_version = Version(re.search(r"Version\s+(\S+)", result.stdout).group(1))  # type: ignore[union-attr]
+            assert found_version is not None
 
         except Exception as error:
             raise PACKMOLRuntimeError(f"Unexpected error ({type(error)}) while running Packmol.") from error
